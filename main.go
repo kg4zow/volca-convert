@@ -160,8 +160,7 @@ func main() {
         fmt.Println( "JSON reader not written yet" )
         os.Exit( 1 )
     } else if ( in_type == CSV ) {
-        fmt.Println( "CSV not written yet" )
-        os.Exit( 1 )
+        read_csv( infile )
     } else {
         usage_msg( "ERROR: requested reader not recognized (bug)" )
     }
