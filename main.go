@@ -45,6 +45,8 @@ to create a CSV file with just the headers. If you do this, no input filename
 is needed, and the first filename on the command line will be used as the
 output filename.
 
+Source: https://github.com/kg4zow/volca-convert
+
 `
 
 func usage() {
@@ -157,8 +159,7 @@ func main() {
     } else if ( in_type == SYX ) {
         read_syx( infile )
     } else if ( in_type == JSON ) {
-        fmt.Println( "JSON reader not written yet" )
-        os.Exit( 1 )
+        read_json( infile )
     } else if ( in_type == CSV ) {
         read_csv( infile )
     } else {
