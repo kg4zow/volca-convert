@@ -176,8 +176,7 @@ func main() {
     } else if ( out_type == JSON ) {
         write_json( outfile , !out_simple )
     } else if ( out_type == SYX ) {
-        fmt.Println( "SYX writer not written yet" )
-        os.Exit( 1 )
+        write_syx( outfile )
     } else {
         usage_msg( "ERROR: requested writer not recognized (bug)" )
     }

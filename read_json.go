@@ -121,7 +121,7 @@ func read_json( filename string ) {
         v.param["LPMD"] = byte( jv.LPMD )
 
         ////////////////////////////////////////
-        // Copy the operator values
+        // Copy the operator value fields
 
         v.param["OP1.EGR1"] = byte( jv.OP1.EGR1 )
         v.param["OP1.EGR2"] = byte( jv.OP1.EGR2 )
@@ -254,6 +254,9 @@ func read_json( filename string ) {
         v.param["OP6.FREC"] = byte( jv.OP6.FREC )
         v.param["OP6.FREF"] = byte( jv.OP6.FREF )
         v.param["OP6.DETU"] = byte( jv.OP6.DETU )
+
+        ////////////////////////////////////////
+        // Copy the "ALL" value fields
 
         v.param["ALL.PTR1"] = byte( jv.ALL.PTR1 )
         v.param["ALL.PTR2"] = byte( jv.ALL.PTR2 )

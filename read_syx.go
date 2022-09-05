@@ -27,9 +27,6 @@ import (
 // - Voice names can use any ASCII character, however the Volca FM/FM2 are
 //   only able to _show_ certain characters.
 
-var SYX_h1  = []byte{ 0xF0 , 0x43 , 0x00 , 0x00 , 0x01 , 0x1B }
-var SYX_h32 = []byte{ 0xF0 , 0x43 , 0x00 , 0x09 , 0x20 , 0x00 }
-
 func read_syx( filename string ) {
     var buf = make( []byte , 8192 )
 
@@ -94,56 +91,58 @@ func parse_syx155( b []byte ) Voice {
     ////////////////////////////////////////
     // Read operator parameter blocks
 
-    for op := 0 ; op < 6 ; op ++ {
-        p := 21*(5-op)
-        prefix := fmt.Sprintf( "OP%d." , op + 1 )
+    for opn := 0 ; opn < 6 ; opn ++ {
+        op_loc := 21 * ( 5 - opn )
+        prefix := fmt.Sprintf( "OP%d." , opn + 1 )
 
-        v.param[ prefix + "EGR1" ] = b[p+ 0]
-        v.param[ prefix + "EGR2" ] = b[p+ 1]
-        v.param[ prefix + "EGR3" ] = b[p+ 2]
-        v.param[ prefix + "EGR4" ] = b[p+ 3]
-        v.param[ prefix + "EGL1" ] = b[p+ 4]
-        v.param[ prefix + "EGL2" ] = b[p+ 5]
-        v.param[ prefix + "EGL3" ] = b[p+ 6]
-        v.param[ prefix + "EGL4" ] = b[p+ 7]
-        v.param[ prefix + "LSBP" ] = b[p+ 8]
-        v.param[ prefix + "LSLD" ] = b[p+ 9]
-        v.param[ prefix + "LSRD" ] = b[p+10]
-        v.param[ prefix + "LSLC" ] = b[p+11]
-        v.param[ prefix + "LSRC" ] = b[p+12]
-        v.param[ prefix + "ORS"  ] = b[p+13]
-        v.param[ prefix + "AMS"  ] = b[p+14]
-        v.param[ prefix + "KVS"  ] = b[p+15]
-        v.param[ prefix + "OLVL" ] = b[p+16]
-        v.param[ prefix + "OSCM" ] = b[p+17]
-        v.param[ prefix + "FREC" ] = b[p+18]
-        v.param[ prefix + "FREF" ] = b[p+19]
-        v.param[ prefix + "DETU" ] = b[p+20]
+        v.param[ prefix + "EGR1" ] = b[ op_loc +  0 ]
+        v.param[ prefix + "EGR2" ] = b[ op_loc +  1 ]
+        v.param[ prefix + "EGR3" ] = b[ op_loc +  2 ]
+        v.param[ prefix + "EGR4" ] = b[ op_loc +  3 ]
+        v.param[ prefix + "EGL1" ] = b[ op_loc +  4 ]
+        v.param[ prefix + "EGL2" ] = b[ op_loc +  5 ]
+        v.param[ prefix + "EGL3" ] = b[ op_loc +  6 ]
+        v.param[ prefix + "EGL4" ] = b[ op_loc +  7 ]
+        v.param[ prefix + "LSBP" ] = b[ op_loc +  8 ]
+        v.param[ prefix + "LSLD" ] = b[ op_loc +  9 ]
+        v.param[ prefix + "LSRD" ] = b[ op_loc + 10 ]
+        v.param[ prefix + "LSLC" ] = b[ op_loc + 11 ]
+        v.param[ prefix + "LSRC" ] = b[ op_loc + 12 ]
+        v.param[ prefix + "ORS"  ] = b[ op_loc + 13 ]
+        v.param[ prefix + "AMS"  ] = b[ op_loc + 14 ]
+        v.param[ prefix + "KVS"  ] = b[ op_loc + 15 ]
+        v.param[ prefix + "OLVL" ] = b[ op_loc + 16 ]
+        v.param[ prefix + "OSCM" ] = b[ op_loc + 17 ]
+        v.param[ prefix + "FREC" ] = b[ op_loc + 18 ]
+        v.param[ prefix + "FREF" ] = b[ op_loc + 19 ]
+        v.param[ prefix + "DETU" ] = b[ op_loc + 20 ]
     }
 
     ////////////////////////////////////////
     // Read "ALL" parameter blocks
 
-    v.param["ALL.PTR1"] = b[126]
-    v.param["ALL.PTR2"] = b[127]
-    v.param["ALL.PTR3"] = b[128]
-    v.param["ALL.PTR4"] = b[129]
-    v.param["ALL.PTL1"] = b[130]
-    v.param["ALL.PTL2"] = b[131]
-    v.param["ALL.PTL3"] = b[132]
-    v.param["ALL.PTL4"] = b[133]
-    v.param["ALGO"    ] = b[134]
-    v.param["ALL.FDBK"] = b[135]
-    v.param["ALL.OKS "] = b[136]
-    v.param["LFOR"    ] = b[137]
-    v.param["ALL.LFOD"] = b[138]
-    v.param["LPMD"    ] = b[139]
-    v.param["ALL.LAMD"] = b[140]
-    v.param["ALL.LFOK"] = b[141]
-    v.param["ALL.LFOW"] = b[142]
-    v.param["ALL.MSP "] = b[143]
-    v.param["ALL.TRSP"] = b[144]
-    v.name = string( b[145:155] )
+    a_loc := 126
+
+    v.param[ "ALL.PTR1" ] = b[ a_loc +  0 ]
+    v.param[ "ALL.PTR2" ] = b[ a_loc +  1 ]
+    v.param[ "ALL.PTR3" ] = b[ a_loc +  2 ]
+    v.param[ "ALL.PTR4" ] = b[ a_loc +  3 ]
+    v.param[ "ALL.PTL1" ] = b[ a_loc +  4 ]
+    v.param[ "ALL.PTL2" ] = b[ a_loc +  5 ]
+    v.param[ "ALL.PTL3" ] = b[ a_loc +  6 ]
+    v.param[ "ALL.PTL4" ] = b[ a_loc +  7 ]
+    v.param[ "ALGO"     ] = b[ a_loc +  8 ]
+    v.param[ "ALL.FDBK" ] = b[ a_loc +  9 ]
+    v.param[ "ALL.OKS"  ] = b[ a_loc + 10 ]
+    v.param[ "LFOR"     ] = b[ a_loc + 11 ]
+    v.param[ "ALL.LFOD" ] = b[ a_loc + 12 ]
+    v.param[ "LPMD"     ] = b[ a_loc + 13 ]
+    v.param[ "ALL.LAMD" ] = b[ a_loc + 14 ]
+    v.param[ "ALL.LFOK" ] = b[ a_loc + 15 ]
+    v.param[ "ALL.LFOW" ] = b[ a_loc + 16 ]
+    v.param[ "ALL.MSP"  ] = b[ a_loc + 17 ]
+    v.param[ "ALL.TRSP" ] = b[ a_loc + 18 ]
+    v.name = string( b[ (a_loc+19):(a_loc+29) ] )
 
     ////////////////////////////////////////
     // Done
@@ -166,56 +165,74 @@ func parse_syx128( b []byte ) Voice {
     ////////////////////////////////////////
     // Read operator parameter blocks
 
-    for op := 0 ; op < 6 ; op ++ {
-        p := 17*(5-op)
-        prefix := fmt.Sprintf( "OP%d." , op + 1 )
+    for opn := 0 ; opn < 6 ; opn ++ {
+        op_loc := 17*(5-opn)
+        prefix := fmt.Sprintf( "OP%d." , opn + 1 )
 
-        v.param[ prefix + "EGR1" ] =   b[p+ 0]
-        v.param[ prefix + "EGR2" ] =   b[p+ 1]
-        v.param[ prefix + "EGR3" ] =   b[p+ 2]
-        v.param[ prefix + "EGR4" ] =   b[p+ 3]
-        v.param[ prefix + "EGL1" ] =   b[p+ 4]
-        v.param[ prefix + "EGL2" ] =   b[p+ 5]
-        v.param[ prefix + "EGL3" ] =   b[p+ 6]
-        v.param[ prefix + "EGL4" ] =   b[p+ 7]
-        v.param[ prefix + "LSBP" ] =   b[p+ 8]
-        v.param[ prefix + "LSLD" ] =   b[p+ 9]
-        v.param[ prefix + "LSRD" ] =   b[p+10]
-        v.param[ prefix + "LSLC" ] = ( b[p+11] & 0b00001100 ) >> 2
-        v.param[ prefix + "LSRC" ] = ( b[p+11] & 0b00000011 )
-        v.param[ prefix + "ORS"  ] = ( b[p+12] & 0b01111000 ) >> 3
-        v.param[ prefix + "AMS"  ] = ( b[p+12] & 0b00000111 )
-        v.param[ prefix + "KVS"  ] = ( b[p+13] & 0b00011100 ) >> 2
-        v.param[ prefix + "OLVL" ] = ( b[p+13] & 0b00000011 )
-        v.param[ prefix + "OSCM" ] =   b[p+14]
-        v.param[ prefix + "FREC" ] = ( b[p+15] & 0b00111110 ) >> 1
-        v.param[ prefix + "FREF" ] = ( b[p+15] & 0b00000001 )
-        v.param[ prefix + "DETU" ] =   b[p+16]
+        v.param[ prefix + "EGR1" ] =   b[ op_loc +  0 ]
+        v.param[ prefix + "EGR2" ] =   b[ op_loc +  1 ]
+        v.param[ prefix + "EGR3" ] =   b[ op_loc +  2 ]
+        v.param[ prefix + "EGR4" ] =   b[ op_loc +  3 ]
+        v.param[ prefix + "EGL1" ] =   b[ op_loc +  4 ]
+        v.param[ prefix + "EGL2" ] =   b[ op_loc +  5 ]
+        v.param[ prefix + "EGL3" ] =   b[ op_loc +  6 ]
+        v.param[ prefix + "EGL4" ] =   b[ op_loc +  7 ]
+        v.param[ prefix + "LSBP" ] =   b[ op_loc +  8 ]
+        v.param[ prefix + "LSLD" ] =   b[ op_loc +  9 ]
+        v.param[ prefix + "LSRD" ] =   b[ op_loc + 10 ]
+
+        v.param[ prefix + "XX11" ] = ( b[ op_loc + 11 ] & 0b01110000 ) >> 4
+        v.param[ prefix + "LSRC" ] = ( b[ op_loc + 11 ] & 0b00001100 ) >> 2
+        v.param[ prefix + "LSLC" ] = ( b[ op_loc + 11 ] & 0b00000011 )
+
+        v.param[ prefix + "DETU" ] = ( b[ op_loc + 12 ] & 0b01111000 ) >> 3
+        v.param[ prefix + "ORS"  ] = ( b[ op_loc + 12 ] & 0b00000111 )
+
+        v.param[ prefix + "XX13" ] = ( b[ op_loc + 13 ] & 0b01100000 ) >> 5
+        v.param[ prefix + "KVS"  ] = ( b[ op_loc + 13 ] & 0b00011100 ) >> 2
+        v.param[ prefix + "AMS"  ] = ( b[ op_loc + 13 ] & 0b00000011 )
+
+        v.param[ prefix + "OLVL" ] =   b[ op_loc + 14 ]
+
+        v.param[ prefix + "XX15" ] = ( b[ op_loc + 15 ] & 0b01000000 ) >> 6
+        v.param[ prefix + "FREC" ] = ( b[ op_loc + 15 ] & 0b00111110 ) >> 1
+        v.param[ prefix + "OSCM" ] = ( b[ op_loc + 15 ] & 0b00000001 )
+
+        v.param[ prefix + "FREF" ] =   b[ op_loc + 16 ]
     }
 
     ////////////////////////////////////////
     // Read voice-global parameter blocks
 
-    v.param["ALL.PTR1"] =   b[102]
-    v.param["ALL.PTR2"] =   b[103]
-    v.param["ALL.PTR3"] =   b[104]
-    v.param["ALL.PTR4"] =   b[105]
-    v.param["ALL.PTL1"] =   b[106]
-    v.param["ALL.PTL2"] =   b[107]
-    v.param["ALL.PTL3"] =   b[108]
-    v.param["ALL.PTL4"] =   b[109]
-    v.param["ALGO"    ] =   b[110]
-    v.param["ALL.FDBK"] = ( b[111] & 0b00001000 ) >> 3
-    v.param["ALL.OKS" ] = ( b[111] & 0b00000111 )
-    v.param["LFOR"    ] =   b[112]
-    v.param["ALL.LFOD"] =   b[113]
-    v.param["LPMD"    ] =   b[114]
-    v.param["ALL.LAMD"] =   b[115]
-    v.param["ALL.LFOK"] = ( b[116] & 0b01110000 ) >> 4
-    v.param["ALL.LFOW"] = ( b[116] & 0b00001110 ) >> 1
-    v.param["ALL.MSP" ] = ( b[116] & 0b00000001 )
-    v.param["ALL.TRSP"] =   b[117]
-    v.name = string( b[118:128] )
+    a_loc := 102
+
+    v.param[ "ALL.PTR1" ] =   b[ a_loc +  0 ]
+    v.param[ "ALL.PTR2" ] =   b[ a_loc +  1 ]
+    v.param[ "ALL.PTR3" ] =   b[ a_loc +  2 ]
+    v.param[ "ALL.PTR4" ] =   b[ a_loc +  3 ]
+    v.param[ "ALL.PTL1" ] =   b[ a_loc +  4 ]
+    v.param[ "ALL.PTL2" ] =   b[ a_loc +  5 ]
+    v.param[ "ALL.PTL3" ] =   b[ a_loc +  6 ]
+    v.param[ "ALL.PTL4" ] =   b[ a_loc +  7 ]
+
+    v.param[ "XX08"     ] = ( b[ a_loc +  8 ] & 0b01100000 ) >> 5
+    v.param[ "ALGO"     ] =   b[ a_loc +  8 ] & 0b00011111
+
+    v.param[ "XX09"     ] = ( b[ a_loc +  9 ] & 0b01110000 ) >> 4
+    v.param[ "ALL.OKS"  ] = ( b[ a_loc +  9 ] & 0b00001000 ) >> 3
+    v.param[ "ALL.FDBK" ] = ( b[ a_loc +  9 ] & 0b00000111 )
+
+    v.param[ "LFOR"     ] =   b[ a_loc + 10 ]
+    v.param[ "ALL.LFOD" ] =   b[ a_loc + 11 ]
+    v.param[ "LPMD"     ] =   b[ a_loc + 12 ]
+    v.param[ "ALL.LAMD" ] =   b[ a_loc + 13 ]
+
+    v.param[ "ALL.MSP"  ] = ( b[ a_loc + 14 ] & 0b01110000 ) >> 4
+    v.param[ "ALL.LFOW" ] = ( b[ a_loc + 14 ] & 0b00001110 ) >> 1
+    v.param[ "ALL.LFOK" ] = ( b[ a_loc + 14 ] & 0b00000001 )
+
+    v.param[ "ALL.TRSP" ] =   b[ a_loc + 15 ]
+    v.name = string( b[ (a_loc+16):(a_loc+26) ] )
 
     ////////////////////////////////////////
     // Done
