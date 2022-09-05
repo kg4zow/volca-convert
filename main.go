@@ -23,9 +23,9 @@ const usage_text = `volca-convert [options] INFILE [OUTFILE]
 Convert a Volca FM/FM2 (or DX7) "patch" file (a set of FM synthesis parameters
 which configure what kind of sound is made) from one format to another.
 
-Input file types: SYX, NONE, (coming soon) JSON, CSV
+Input file types: SYX, NONE, JSON, CSV
 
-Output file types: TEXT, CSV, JSON, (coming soon) SYX
+Output file types: TEXT, CSV, JSON, SYX
 
 -i ___  Specify the type of INFILE. This is needed if INFILE doesn't end
         with '.json', '.syx', or '.csv'.
@@ -34,11 +34,13 @@ Output file types: TEXT, CSV, JSON, (coming soon) SYX
         with '.json', '.syx', or '.csv'. If the program can't tell what kind
         of file to write, it will write TEXT by default.
 
--s      Generate "simple" output.
+-s      Generate "simple" output. The exact meaning of this depends on what
+        kind of output file is being created.
         - TEXT  don't include the voice's name in hex.
         - CSV   don't include the header rows.
         - JSON  don't include any extra indentation to make the file easier
                 for humans to read/edit.
+        - SYX   no affect.
 
 You can use '-i none' to not read any input file, which is useful if you need
 to create a CSV file with just the headers. If you do this, no input filename
@@ -75,7 +77,7 @@ func main() {
     var out_type    FileType
     var out_simple  bool
 
-    ////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
     // Set up and parse command line options
 
     var itype string
@@ -88,15 +90,18 @@ func main() {
     flag.Usage = usage
     flag.Parse()
 
+    ////////////////////////////////////////
+    // Get input and output filenames
+
+    infile  = flag.Arg( 0 )
+    outfile = flag.Arg( 1 )
+
     ////////////////////////////////////////////////////////////
-    // Figure out the input and output file types and names.
+    // Figure out the input and output file types
 
     is_json := regexp.MustCompile( "(?i)\\.json$" )
     is_syx  := regexp.MustCompile( "(?i)\\.syx$"  )
     is_csv  := regexp.MustCompile( "(?i)\\.csv$"  )
-
-    infile  = flag.Arg( 0 )
-    outfile = flag.Arg( 1 )
 
     ////////////////////////////////////////
     // Figure out the input file type.
@@ -151,7 +156,7 @@ func main() {
         out_type = TEXT
     }
 
-    ////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
     // Read/parse input file into memory
 
     if ( in_type == NONE ) {
@@ -166,7 +171,7 @@ func main() {
         usage_msg( "ERROR: requested reader not recognized (bug)" )
     }
 
-    ////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
     // Write memory to output file
 
     if ( out_type == TEXT ) {
